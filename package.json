@@ -1,5 +1,5 @@
 {
-  "name": "node-dubbo-client",
+  "name": "node-dubbo-client-pool",
   "version": "0.0.1",
   "description": "node connect dubbo by default protocol in zookeeper base on node-zookeeper-dubbo",
   "main": "index.js",
@@ -15,7 +15,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/jizhuofeng/node-dubbo-client"
+    "url": "git+https://github.com/jizhuofeng/node-dubbo-client-pool.git"
   },
   "author": "jizhuofeng@163.com",
   "license": "ISC",
@@ -23,5 +23,12 @@
     "socket-client-pool": "^0.0.4",
     "hessian.js": "^2.1.8",
     "node-zookeeper-client": "0.2.2"
+  },
+  "bugs": {
+    "url": "https://github.com/jizhuofeng/node-dubbo-client-pool/issues"
+  },
+  "homepage": "https://github.com/jizhuofeng/node-dubbo-client-pool#readme",
+  "directories": {
+    "test": "test"
   }
 }
