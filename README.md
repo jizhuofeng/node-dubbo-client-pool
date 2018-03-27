@@ -1,17 +1,20 @@
-# node-zookeeper-dubbo
-nodejs通过dubbo默认协议通信
+# node-dubbo-client
+nodejs通过dubbo默认协议通信，基于node-zookeeper-dubbo， 实现连接池。
+每一个接口有多个provider提供服务，针对于每个provider建立（多个）长链接。
 
 
 ### Usage
 
 ```javascript
-const nzd=require('node-zookeeper-dubbo');
+const nzd=require('node-dubbo-client');
 const app=require('express')();
 const opt={
   application:{name:'fxxk'},
   register:'www.cctv.com:2181',
   dubboVer:'2.5.3.6',
   root:'dubbo',
+  maxConn: 10,
+  minConn: 2,
   dependencies:{
     Foo:{
       interface:'com.service.Foo',
@@ -75,6 +78,8 @@ app.listen(9090)
 - **register** - zookeeper服务地址，必填
 - **dubboVer** - dubbo版本，必填
 - **root** - 注册到zookeeper上的根节点名称
+- **maxConn** - 连接到每一个provider的链接的最大个数，默认10个。
+- **minConn** - 连接到每一个provider的链接的最小个数，默认2个。
 - **dependencies** - 依赖的服务集，必填
   * Foo - 自定义名称，这里方便起见用Foo作为事例，必填
     * interface - 服务地址，必填
@@ -90,7 +95,3 @@ var arg={$class:'int',$:123};
 var arg=java('int',123);
 ```
 
-
-[npm-image]:http://img.shields.io/npm/v/node-zookeeper-dubbo.svg?style=flat-square
-[npm-url]:https://npmjs.org/package/node-zookeeper-dubbo?style=flat-square
-[downloads-image]:http://img.shields.io/npm/dm/node-zookeeper-dubbo.svg?style=flat-square
