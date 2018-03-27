@@ -1,4 +1,4 @@
-# node-dubbo-client
+# node-dubbo-client-pool
 nodejs通过dubbo默认协议通信，基于node-zookeeper-dubbo， 实现连接池。
 每一个接口有多个provider提供服务，针对于每个provider建立（多个）长链接。
 
@@ -6,7 +6,7 @@ nodejs通过dubbo默认协议通信，基于node-zookeeper-dubbo， 实现连接
 ### Usage
 
 ```javascript
-const nzd=require('node-dubbo-client');
+const nzd=require('node-dubbo-client-pool');
 const app=require('express')();
 const opt={
   application:{name:'fxxk'},

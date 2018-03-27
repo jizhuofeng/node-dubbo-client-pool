@@ -1,6 +1,6 @@
 {
   "name": "node-dubbo-client-pool",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "node connect dubbo by default protocol in zookeeper base on node-zookeeper-dubbo",
   "main": "index.js",
   "scripts": {
