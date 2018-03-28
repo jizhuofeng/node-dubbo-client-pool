@@ -20,16 +20,16 @@ const options = {
       version: '1.0.0',
       timeout: 6000,
     },
-    backgroundProvider: {
-      interface: 'com.showjoy.product.interfaces.BackgroundProvider',
-      version: '1.0.0',
-      timeout: 6000,
-    },
-    backgroundSpecProvider: {
-      interface: 'com.showjoy.product.interfaces.BackgroundSpecProvider',
-      version: '1.0.0',
-      timeout: 6000,
-    }
+    // backgroundProvider: {
+    //   interface: 'com.showjoy.product.interfaces.BackgroundProvider',
+    //   version: '1.0.0',
+    //   timeout: 6000,
+    // },
+    // backgroundSpecProvider: {
+    //   interface: 'com.showjoy.product.interfaces.BackgroundSpecProvider',
+    //   version: '1.0.0',
+    //   timeout: 6000,
+    // }
   }
 }
 //options.java = require('js-to-java');

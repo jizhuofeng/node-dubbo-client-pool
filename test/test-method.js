@@ -9,4 +9,4 @@ setTimeout(function() {
   }).catch(function(err) {
     console.log(JSON.stringify(err.toString));
   })
-}, 5000);
+}, 10000);

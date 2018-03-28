@@ -88,6 +88,7 @@ var Service = function (zk, dubboVer, depend, opt) {
 Service.prototype._find = function (path, cb) {
   const self  = this;
   self._hosts = [];
+  self._availableHosts = [];
   self._pool  = new Map();
   this._zk.getChildren(`/${this._root}/${path}/providers`, watch, handleResult);
 
@@ -111,6 +112,7 @@ Service.prototype._find = function (path, cb) {
       zoo = qs.parse(decodeURIComponent(children[i]));
       if (zoo.version === self._version && zoo.group === self._group) {
         self._hosts.push(url.parse(Object.keys(zoo)[0]).host);
+        //self._hosts.push('10.1.2.13:62044');
         const methods = zoo.methods.split(',');
         for (let i = 0, l = methods.length; i < l; i++) {
           self[methods[i]] = (function (method) {
@@ -132,12 +134,22 @@ Service.prototype._find = function (path, cb) {
     //根据该service的生产者hosts构建连接池
     self._hosts.forEach(item => {
       let host = item.split(':');
-      self._pool.set(item, 
-        Client.Pool({host: host[0], port: host[1], 
-            min: self.minConn, max: self.maxConn, 
-            errcb: function(hostPort) {
-              self._pool.delete(hostPort);
-        }}))
+      //console.log(host);
+      let client = Client.Pool({host: host[0], port: host[1], 
+          min: self.minConn, max: self.maxConn, 
+          succb: function() {
+            self._pool.set(item, client);
+            self._availableHosts.push(item);
+          },
+          errcb: function(hostPort, obj) {
+            //发生错误时将该客户端实例从连接池中剔除
+            console.log(`connect ${path} provicer ${hostPort} occour error`);
+            self._pool.delete(hostPort);
+            obj.clientList.forEach(conn => {
+              conn.destroy();
+            })
+            obj = null;
+        }});
     })
     if (typeof cb === 'function') {
       return cb();
@@ -160,11 +172,12 @@ Service.prototype._execute = function (method, args) {
 
 
   return new Promise(function (resolve, reject) {
-    if (self._hosts.length === 0) {
+    if (self._availableHosts.length === 0) {
       return reject('service can not be found, pls check')
     }
-    let connIndex = Math.random() * self._hosts.length | 0;
-    self._pool.get(self._hosts[connIndex]).getConnection(function(conn) {
+    let connIndex = Math.random() * self._availableHosts.length | 0;
+    //console.log(self._availableHosts.length);
+    self._pool.get(self._availableHosts[connIndex]).getConnection(function(conn) {
       const chunks = [];
       let heap;
       let bl       = 16;
@@ -181,7 +194,7 @@ Service.prototype._execute = function (method, args) {
         heap = Buffer.concat(chunks);
         if (heap.length >= bl) {
           //释放连接
-          self._pool.get(self._hosts[connIndex]).releaseConnection(conn);
+          self._pool.get(self._availableHosts[connIndex]).releaseConnection(conn);
           decode(heap, function (err, result) {
             if (err) {
               return reject(err);

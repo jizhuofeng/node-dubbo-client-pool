@@ -1,6 +1,6 @@
 {
   "name": "node-dubbo-client-pool",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "node connect dubbo by default protocol in zookeeper base on node-zookeeper-dubbo",
   "main": "index.js",
   "scripts": {
@@ -20,7 +20,7 @@
   "author": "jizhuofeng@163.com",
   "license": "ISC",
   "dependencies": {
-    "socket-client-pool": "^0.0.4",
+    "socket-client-pool": "^0.0.5",
     "hessian.js": "^2.1.8",
     "node-zookeeper-client": "0.2.2"
   },
